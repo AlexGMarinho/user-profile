@@ -1,14 +1,17 @@
 import express, { NextFunction, Request, Response } from "express";
 import "dotenv/config";
 import { errors } from "celebrate";
+import uploadConfig from "../../config/upload";
 import { AppError } from "../errors/AppError";
 import { router } from "./routers/routes";
 
 const app = express();
 
 app.use(express.json());
-app.use(router);
 
+app.use("/files", express.static(uploadConfig.director));
+
+app.use(router);
 app.use(errors());
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
